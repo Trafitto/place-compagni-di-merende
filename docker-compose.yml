@@ -1,0 +1,10 @@
+version: '2'
+services:
+    place-compagni-di-merende:
+        container_name: place-compagni-di-merende
+        command: ./server/app.py
+        build: .
+        ports:
+            - "5000:5000"
+        volumes:
+            - .:/code
