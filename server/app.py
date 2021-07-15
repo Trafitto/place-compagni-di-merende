@@ -6,8 +6,8 @@ from src.image_utils import Retriever
 app = Flask(__name__)
 
 @app.route('/')
-def hello_world():
-    return 'OLA!!'
+def index():
+    return render_template('index.html')
 
 @app.route('/place', methods=['GET'])
 @app.route('/place/<mate>',  methods=['GET'])
