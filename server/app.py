@@ -12,8 +12,8 @@ def index():
 @app.route('/place', methods=['GET'])
 @app.route('/place/<mate>',  methods=['GET'])
 def place(mate=None):
-	width = request.args.get('width', default=320, type=int)
-	height = request.args.get('height', default=250, type=int)
+	width = request.args.get('width', type=int)
+	height = request.args.get('height', type=int)
 	image, mimetype = Retriever(mate).get_byte_image(width, height)
 	if image == b'':
     		return abort(404)

@@ -5,29 +5,43 @@ import tempfile
 from .settings import IMAGE_MAX_PIXEL, SNACKS_COMPANIONS
 
 
-def ratio(width, height):
-    ratio = float(width) / float(height)
-    return ratio
+class ImageManager():
+    def __init__(self, path):
+        self.path = path
+        self.image = Image.open(self.path)
 
-def clean(value):
-    value = int(value)
-    if value > IMAGE_MAX_PIXEL:
-        return IMAGE_MAX_PIXEL
-    return value
+    def resizie(self, width, height, new_dir):
+        width, height = self._calculate_size(width, height)
+        img = self.image.resize((width, height), resample=Image.BICUBIC)
+        img.save(new_dir)
 
-def get_size(image, width=None, height=None):
-    current_width, current_height = image.size
-    current_ratio = ratio(current_width, current_height)
+    def _ratio(self, width, height):
+        ratio = float(width) / float(height)
+        return ratio
 
-    if width:
-        width = clean(width)
-        height = int(width / ratio)
-    elif height:
-        height = clean(height)
-        width= int(height * ratio)
+    def _clean(self, value):
+        value = int(value)
+        if value > IMAGE_MAX_PIXEL:
+            return IMAGE_MAX_PIXEL
+        return value
 
-    return width, height
+    def _calculate_size(self, width=None, height=None):
+        if width and height:
+            # If the users passes both width and height
+            # we return the image as he wants
+            return width, height
 
+        current_width, current_height = self.image.size
+        current_ratio = self._ratio(current_width, current_height)
+
+        if width:
+            width = self._clean(width)
+            height = int(width / current_ratio)
+        elif height:
+            height = self._clean(height)
+            width= int(height * current_ratio)
+
+        return width, height
 
 
 class Retriever():
@@ -49,7 +63,7 @@ class Retriever():
         else: 
             return default_mime
 
-    def _get_temp_file(self, image, width, height):
+    def _get_temp_file_dir(self, image, width, height):
         return f'{tempfile.gettempdir()}/{width}_{height}_{image}'
 
     def get_byte_image(self, width, height):
@@ -59,12 +73,13 @@ class Retriever():
         except FileNotFoundError:
             return b''
             
+        # TODO: Save on cache the image 
         full_path = f'{self.image_path}/{chosen_image}'
 
-        img = Image.open(full_path)
-        img = img.resize((width, height), resample=Image.BICUBIC)
-        new_file_path = self._get_temp_file(chosen_image, width, height)
-        img.save(new_file_path)
+        new_file_path = self._get_temp_file_dir(chosen_image, width, height)
+
+        ImageManager(full_path).resizie(width, height, new_file_path)
+     
         
         with open(new_file_path, 'rb') as image:
             image_bytes = image.read()
