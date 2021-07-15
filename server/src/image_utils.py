@@ -44,7 +44,7 @@ class ImageManager():
         return width, height
 
 
-class Retriever():
+class Companions():
     image_path = './server/static/image/{mate}/'
     def __init__(self, mate=None):
         if mate is None:
