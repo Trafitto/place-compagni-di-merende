@@ -29,7 +29,7 @@ class ImageManager():
         if width and height:
             # If the users passes both width and height
             # we return the image as he wants
-            return width, height
+            return self._clean(width), self._clean(height)
 
         current_width, current_height = self.image.size
         current_ratio = self._ratio(current_width, current_height)
