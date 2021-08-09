@@ -10,8 +10,9 @@ class ImageManager():
         self.path = path
         self.image = Image.open(self.path)
 
-    def resizie(self, width, height, new_dir):
+    def resizie(self, new_dir, width=None, height=None):
         width, height = self._calculate_size(width, height)
+        
         img = self.image.resize((width, height), resample=Image.BICUBIC)
         img.save(new_dir)
 
@@ -32,6 +33,10 @@ class ImageManager():
             return self._clean(width), self._clean(height)
 
         current_width, current_height = self.image.size
+
+        if width is None and height is None:
+            return current_width, current_height
+
         current_ratio = self._ratio(current_width, current_height)
 
         if width:
@@ -49,7 +54,6 @@ class Companions():
     def __init__(self, mate=None):
         if mate is None:
             mate = random.choice(SNACKS_COMPANIONS)
-
         self.image_path = self.image_path.format(mate=mate.lower())
 
     def _guess_mimetypes(self, image):
@@ -66,21 +70,20 @@ class Companions():
     def _get_temp_file_dir(self, image, width, height):
         return f'{tempfile.gettempdir()}/{width}_{height}_{image}'
 
-    def get_byte_image(self, width, height):
+    def get_byte_image(self, width=None, height=None):
         image_bytes = b''
         try:
             chosen_image = random.choice(os.listdir(self.image_path))
         except FileNotFoundError:
-            return b''
+            return b'', None
             
         # TODO: Save on cache the image 
         full_path = f'{self.image_path}/{chosen_image}'
 
         new_file_path = self._get_temp_file_dir(chosen_image, width, height)
 
-        ImageManager(full_path).resizie(width, height, new_file_path)
+        ImageManager(full_path).resizie(new_file_path, width, height)
      
-        
         with open(new_file_path, 'rb') as image:
             image_bytes = image.read()
         mimetype = self._guess_mimetypes(chosen_image)
