@@ -2,7 +2,7 @@ import os
 import io
 from flask import Flask, render_template, send_file, abort, request
 from src.image_utils import Companions
-
+import logging
 app = Flask(__name__)
 
 @app.route('/')
@@ -12,9 +12,13 @@ def index():
 @app.route('/place', methods=['GET'])
 @app.route('/place/<mate>',  methods=['GET'])
 def place(mate=None):
+    	
 	width = request.args.get('width', type=int)
 	height = request.args.get('height', type=int)
 	image, mimetype = Companions(mate).get_byte_image(width, height)
+	app.logger.info(mimetype)
+	# app.logger.info(image)
+
 	if image == b'':
     		return abort(404)
 	return send_file(io.BytesIO(image), mimetype=mimetype)
