@@ -7,7 +7,8 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    
+    return render_template('index.html', url=request.base_url)
 
 @app.route('/place', methods=['GET'])
 @app.route('/place/<mate>',  methods=['GET'])

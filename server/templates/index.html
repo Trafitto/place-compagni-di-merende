@@ -48,20 +48,50 @@
                 <div class="card">
                   <p class="font-weight-light font-size-24">Un semplice e veloce servizio, per servire bellissime foto di questo iconico trio di buoni amici, con lo scopo di usarle come placeholder. </p></div>
                 </div>
-              <div class="col-sm"><img src="{{url_for('static', filename='image/pacciani/1.png')}}" class="img-fluid rounded"/></div>
+              <div class="col-sm"><img src="{{url}}/place/pacciani" class="img-fluid rounded"/></div>
             </div>
             <div class="row">
               <div class="col-sm">
                 <div class="card">
                   <h4>Come si usa:</h4>
-                  
-
-                 <!--TODO: Add example to use-->
-
+                  <div class='simple-use'>
+                  L'url é:</br>
+                    <code class="url">
+                        {{url}}place
+                    </code>
+                    </br>
+                    </br>
+                    Puoi aggiungere i parametri opzionali <code>width</width> and <code>height</code> </br>per scegliere la dimensione dell'immagine</br></br>
+                    <code class="url">
+                        {{url}}place?width=500&height=500
+                    </code>
+                  </div>
+                 </br>
+                  <div class='mates'>
+                    É possibile specificare il compagno di merende preferito aggiungendo il nome all'url</br></br>
+                    <code class="url">
+                        {{url}}place/pacciani
+                    </code></br>
+                    <code class="url">
+                        {{url}}place/vanni
+                    </code></br>
+                    <code class="url">
+                        {{url}}place/lotti
+                    </code></br>
+                  </div>
+                </br>
+                <div class='example'>
+                  <h5>Esempio <span><</span>img<span>><span> Tag</h5>
+                  <code>
+                    <span><</span>img
+                    <span>src='{{url}}place'</span>
+                    <span>><span>
+                  </code>
+                </div>
                 </div>
               </div>
                 
-              <div class="col-sm"><img src="http://0.0.0.0:5000/place/vanni?width=754&height=432" class="img-fluid rounded"/></div>
+              <div class="col-sm"><img src="{{url}}/place/vanni?width=754&height=432" class="img-fluid rounded"/></div>
             </div>
           </div>
         </div>
