@@ -10,11 +10,17 @@ class ImageManager():
         self.path = path
         self.image = Image.open(self.path)
 
+    def read(self, path):
+        with open(path, 'rb') as image:
+            image_bytes = image.read()
+        return image_bytes
+
     def resize(self, new_dir, width=None, height=None):
         width, height = self._calculate_size(width, height)
         
         img = self.image.resize((width, height), resample=Image.BICUBIC)
         img.save(new_dir)
+        return self.path
 
     def _ratio(self, width, height):
         ratio = float(width) / float(height)
@@ -82,10 +88,9 @@ class Companions():
 
         new_file_path = self._get_temp_file_dir(chosen_image, width, height)
 
-        ImageManager(full_path).resize(new_file_path, width, height)
-     
-        with open(new_file_path, 'rb') as image:
-            image_bytes = image.read()
+        image_manager = ImageManager(full_path)
+        tmp_path = image_manager.resize(new_file_path, width, height)
+        image_bytes = image_manager.read(tmp_path)
         mimetype = self._guess_mimetypes(chosen_image)
         
         return image_bytes, mimetype
