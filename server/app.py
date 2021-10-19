@@ -13,8 +13,8 @@ def index():
 @app.route('/place', methods=['GET'])
 @app.route('/place/<mate>',  methods=['GET'])
 def place(mate=None):
-	width = request.args.get('width', type=int)
-	height = request.args.get('height', type=int)
+	width = request.args.get('w', type=int) or request.args.get('width', type=int)
+	height = request.args.get('h', type=int) or request.args.get('height', type=int)
 	image, mimetype = Companions(mate).get_byte_image(width, height)
 	if image == b'':
     		return abort(404)

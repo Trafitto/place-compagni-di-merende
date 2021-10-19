@@ -10,7 +10,7 @@ class ImageManager():
         self.path = path
         self.image = Image.open(self.path)
 
-    def resizie(self, new_dir, width=None, height=None):
+    def resize(self, new_dir, width=None, height=None):
         width, height = self._calculate_size(width, height)
         
         img = self.image.resize((width, height), resample=Image.BICUBIC)
@@ -82,7 +82,7 @@ class Companions():
 
         new_file_path = self._get_temp_file_dir(chosen_image, width, height)
 
-        ImageManager(full_path).resizie(new_file_path, width, height)
+        ImageManager(full_path).resize(new_file_path, width, height)
      
         with open(new_file_path, 'rb') as image:
             image_bytes = image.read()
