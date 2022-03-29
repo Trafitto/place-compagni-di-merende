@@ -20,7 +20,7 @@ class ImageManager():
         
         img = self.image.resize((width, height), resample=Image.BICUBIC)
         img.save(new_dir)
-        return self.path
+        return new_dir
 
     def _ratio(self, width, height):
         ratio = float(width) / float(height)
